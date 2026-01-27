@@ -25,11 +25,16 @@
   <!-- Actions Bar -->
   <div class="actions-bar">
     <div class="search-box">
-      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterStudents()"
-             placeholder="Rechercher par nom, email ou matricule..." class="search-input">
+      <input
+        type="text"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="filterStudents()"
+        placeholder="Rechercher par nom, email ou matricule..."
+        class="search-input"
+        id="searchInput">
     </div>
 
-    <button class="add-student-btn">
+    <button class="add-student-btn" (click)="addStudent()">
       <span>+</span>
       <span>Ajouter un étudiant</span>
     </button>
@@ -39,8 +44,12 @@
   <div class="filters-section">
     <div class="filter-row">
       <div class="filter-group">
-        <label>Statut:</label>
-        <select [(ngModel)]="selectedStatus" (ngModelChange)="filterStudents()" class="filter-select">
+        <label for="statusFilter">Statut:</label>
+        <select
+          id="statusFilter"
+          [(ngModel)]="selectedStatus"
+          (ngModelChange)="filterStudents()"
+          class="filter-select">
           <option value="Tous">Tous</option>
           <option value="Actif">Actif</option>
           <option value="Inactif">Inactif</option>
@@ -48,8 +57,8 @@
       </div>
 
       <div class="filter-group">
-        <label>Trier par:</label>
-        <select class="filter-select">
+        <label for="sortFilter">Trier par:</label>
+        <select id="sortFilter" class="filter-select">
           <option>Nom (A-Z)</option>
           <option>Nom (Z-A)</option>
           <option>Infractions (Croissant)</option>
@@ -94,20 +103,21 @@
             </div>
           </td>
           <td>
-              <span class="fines" [class]="getFineClass(student.totalFines)">
+              <span [ngClass]="getFineClass(student.totalFines)">
                 {{ student.totalFines }} DT
               </span>
           </td>
           <td>
-              <span class="status-badge" [class.active]="student.status === 'Actif'"
+              <span class="status-badge"
+                    [class.active]="student.status === 'Actif'"
                     [class.inactive]="student.status === 'Inactif'">
                 {{ student.status }}
               </span>
           </td>
           <td class="actions">
-            <button class="action-btn btn-view" title="Voir profil">👁️</button>
-            <button class="action-btn btn-edit" title="Modifier">✏️</button>
-            <button class="action-btn btn-delete" title="Supprimer">🗑️</button>
+            <button class="action-btn btn-view" title="Voir profil" (click)="viewProfile(student)">👁️</button>
+            <button class="action-btn btn-edit" title="Modifier" (click)="editStudent(student)">✏️</button>
+            <button class="action-btn btn-delete" title="Supprimer" (click)="deleteStudent(student)">🗑️</button>
           </td>
         </tr>
         </tbody>
@@ -123,17 +133,26 @@
 
     <!-- Pagination -->
     <div class="pagination" *ngIf="totalPages > 1">
-      <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">← Précédent</button>
+      <button
+        (click)="previousPage()"
+        [disabled]="currentPage === 1">
+        ← Précédent
+      </button>
 
       <div class="page-numbers">
-        <button *ngFor="let page of [].constructor(totalPages); let i = index"
-                (click)="currentPage = i + 1"
-                [class.active]="currentPage === i + 1">
+        <button
+          *ngFor="let page of getPagesArray(); let i = index"
+          (click)="goToPage(i + 1)"
+          [class.active]="currentPage === i + 1">
           {{ i + 1 }}
         </button>
       </div>
 
-      <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">Suivant →</button>
+      <button
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages">
+        Suivant →
+      </button>
 
       <div class="page-info">
         Page {{ currentPage }} sur {{ totalPages }}
