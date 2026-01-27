@@ -1,0 +1,144 @@
+<div class="etudiants-container">
+  <!-- Header -->
+  <div class="page-header">
+    <h1>Étudiants</h1>
+    <div class="header-stats">
+      <div class="stat">
+        <span class="stat-number">{{ getStats().total }}</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">{{ getStats().active }}</span>
+        <span class="stat-label">Actifs</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">{{ getStats().totalInfractions }}</span>
+        <span class="stat-label">Infractions</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">{{ getStats().totalFines }} DT</span>
+        <span class="stat-label">Amendes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions Bar -->
+  <div class="actions-bar">
+    <div class="search-box">
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterStudents()"
+             placeholder="Rechercher par nom, email ou matricule..." class="search-input">
+    </div>
+
+    <button class="add-student-btn">
+      <span>+</span>
+      <span>Ajouter un étudiant</span>
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-section">
+    <div class="filter-row">
+      <div class="filter-group">
+        <label>Statut:</label>
+        <select [(ngModel)]="selectedStatus" (ngModelChange)="filterStudents()" class="filter-select">
+          <option value="Tous">Tous</option>
+          <option value="Actif">Actif</option>
+          <option value="Inactif">Inactif</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>Trier par:</label>
+        <select class="filter-select">
+          <option>Nom (A-Z)</option>
+          <option>Nom (Z-A)</option>
+          <option>Infractions (Croissant)</option>
+          <option>Infractions (Décroissant)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <div class="table-responsive">
+      <table class="students-table">
+        <thead>
+        <tr>
+          <th>Étudiant</th>
+          <th>Matricule</th>
+          <th>Infractions</th>
+          <th>Total amendes</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let student of paginatedStudents">
+          <td>
+            <div class="student-info">
+              <div class="avatar">{{ student.name.charAt(0) }}</div>
+              <div class="student-details">
+                <div class="student-name">{{ student.name }}</div>
+                <div class="student-email">{{ student.email }}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="matricule">{{ student.matricule }}</span>
+          </td>
+          <td>
+            <div class="infractions-count">
+              <span class="count-badge">{{ student.infractions }}</span>
+              <span>infraction(s)</span>
+            </div>
+          </td>
+          <td>
+              <span class="fines" [class]="getFineClass(student.totalFines)">
+                {{ student.totalFines }} DT
+              </span>
+          </td>
+          <td>
+              <span class="status-badge" [class.active]="student.status === 'Actif'"
+                    [class.inactive]="student.status === 'Inactif'">
+                {{ student.status }}
+              </span>
+          </td>
+          <td class="actions">
+            <button class="action-btn btn-view" title="Voir profil">👁️</button>
+            <button class="action-btn btn-edit" title="Modifier">✏️</button>
+            <button class="action-btn btn-delete" title="Supprimer">🗑️</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredStudents.length === 0" class="empty-state">
+      <div class="empty-state-icon">👨‍🎓</div>
+      <h3>Aucun étudiant trouvé</h3>
+      <p>Essayez de modifier vos critères de recherche</p>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button (click)="currentPage = currentPage - 1" [disabled]="currentPage === 1">← Précédent</button>
+
+      <div class="page-numbers">
+        <button *ngFor="let page of [].constructor(totalPages); let i = index"
+                (click)="currentPage = i + 1"
+                [class.active]="currentPage === i + 1">
+          {{ i + 1 }}
+        </button>
+      </div>
+
+      <button (click)="currentPage = currentPage + 1" [disabled]="currentPage === totalPages">Suivant →</button>
+
+      <div class="page-info">
+        Page {{ currentPage }} sur {{ totalPages }}
+        ({{ filteredStudents.length }} étudiants)
+      </div>
+    </div>
+  </div>
+</div>
