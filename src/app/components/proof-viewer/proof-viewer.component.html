@@ -1,0 +1,20 @@
+<div class="modal-backdrop">
+  <div class="modal" *ngIf="infractionId !== null">
+    <h3>Preuves de l'infraction #{{ infractionId }}</h3>
+    <div class="proof-list">
+      <div *ngFor="let proof of proofs">
+        <button (click)="openPreview(proof)">
+          Voir {{ proof.type }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" *ngIf="selectedProof" (click)="closePreview()">
+  <img *ngIf="selectedProof.type === 'image'" [src]="selectedProof.url" />
+  <video *ngIf="selectedProof.type === 'video'" controls autoplay>
+    <source [src]="selectedProof.url" type="video/mp4" />
+  </video>
+  <span class="close-btn" (click)="closePreview()">✖</span>
+</div>

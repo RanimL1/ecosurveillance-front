@@ -1,0 +1,72 @@
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Logo" class="sidebar-logo">
+      <div class="brand-text">
+        <span class="brand-eco">ECO</span>
+        <span class="brand-sub">SURVEILLANCE</span>
+      </div>
+    </div>
+
+    <nav class="menu">
+      <a [routerLink]="'/admin/dashboard'" routerLinkActive="active" class="menu-item">
+        <i class="fas fa-th-large"></i> Tableau de bord
+      </a>
+      <a [routerLink]="'/admin/infractions'" routerLinkActive="active" class="menu-item">
+        <i class="fas fa-minus-circle"></i> Infractions
+      </a>
+      <a [routerLink]="'/admin/users'" routerLinkActive="active" class="menu-item">
+        <i class="fas fa-users"></i> Etudiants
+      </a>
+      <a [routerLink]="'/admin/stats'" routerLinkActive="active" class="menu-item">
+        <i class="fas fa-chart-line"></i> Statistiques
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-profile">
+        <img src="assets/admin.jpg" alt="Admin" class="avatar-img">
+        <div class="user-text">
+          <p class="user-name">Foulen Ben Foulen</p>
+          <p class="user-role">Admin</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="top-bar">
+      <h2>Etudiants</h2>
+      <div class="user-profile">
+        <img src="assets/admin.jpg" alt="Admin" class="avatar-img">
+        <div class="user-text">
+          <p class="user-name">Foulen Ben Foulen</p>
+          <p class="user-role">Admin</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="content-area">
+      <div class="table-frame">
+        <table class="etudiant-table">
+          <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Date infration</th>
+            <th>Punition</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let i of [1,2,3,4,5]">
+            <td>Foulen ben Foulen</td>
+            <td>Foulen@gmail.com</td>
+            <td>01/05/25</td>
+            <td>-</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</div>

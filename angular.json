@@ -13,23 +13,23 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/eco-surveillance-front",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "polyfills": ["zone.js"],
+            "styles": ["src/styles.css"],
+            "scripts": [],
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
-            // SUPPRIMEZ ces lignes :
-            // "server": "src/main.server.ts",
-            // "outputMode": "server",
-            // "ssr": {
-            //   "entry": "src/server.ts"
-            // }
+            ]
           },
           "configurations": {
             "production": {
@@ -53,7 +53,7 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular/build:dev-server",
@@ -74,14 +74,17 @@
           "builder": "@angular/build:karma",
           "options": {
             "tsConfig": "tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"],
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
               }
-            ],
-            "styles": [
-              "src/styles.css"
             ]
           }
         }
