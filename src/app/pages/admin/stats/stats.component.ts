@@ -1,8 +1,10 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { Chart } from 'chart.js';
+import { RouterModule, Router } from '@angular/router'; // 1. Ajout de Router ici
+import { Chart, registerables } from 'chart.js'; // 2. Ajout de registerables pour éviter les erreurs de rendu
 import { DashboardService } from '../../../services/dashboard.service';
+
+Chart.register(...registerables); // Enregistre les composants nécessaires pour Chart.js
 
 @Component({
   selector: 'app-stats',
@@ -16,7 +18,11 @@ export class StatsComponent implements OnInit, AfterViewInit {
   barChart: any;
   lineChart: any;
 
-  constructor(private dashboardService: DashboardService) {}
+  // 3. Injection du Router dans le constructeur
+  constructor(
+    private dashboardService: DashboardService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {}
 
@@ -24,8 +30,20 @@ export class StatsComponent implements OnInit, AfterViewInit {
     this.initCharts();
   }
 
-  initCharts() {
+  /**
+   * Logique de déconnexion
+   */
+  onLogout(): void {
+    // Nettoyage de la session
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    sessionStorage.clear();
 
+    // Redirection vers la page de connexion
+    this.router.navigate(['/login']);
+  }
+
+  initCharts() {
     // 📊 BAR CHART
     const barCanvas = document.getElementById('barChart') as HTMLCanvasElement;
 
@@ -33,15 +51,16 @@ export class StatsComponent implements OnInit, AfterViewInit {
       this.barChart = new Chart(barCanvas, {
         type: 'bar',
         data: {
-          labels: ['Déchet', 'Eau', 'Air'],
+          labels: ['En-attente', 'Terminée'],
           datasets: [
-            { data: [4, 2, 1], label: 'Jan', backgroundColor: '#4285F4' },
-            { data: [8, 3, 2], label: 'Fev', backgroundColor: '#DB4437' },
-            { data: [6, 4, 1], label: 'Mar', backgroundColor: '#0F9D58' }
+            { data: [4, 2], label: 'Jan', backgroundColor: '#4285F4' },
+            { data: [8, 3], label: 'Fev', backgroundColor: '#DB4437' },
+            { data: [6, 4], label: 'Mar', backgroundColor: '#0F9D58' }
           ]
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false, // Recommandé pour le contrôle de la taille
           plugins: { legend: { position: 'bottom' } }
         }
       });
@@ -66,6 +85,7 @@ export class StatsComponent implements OnInit, AfterViewInit {
         },
         options: {
           responsive: true,
+          maintainAspectRatio: false,
           plugins: { legend: { position: 'bottom' } }
         }
       });

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router'; // Ajout de Router
 import { DashboardService } from '../../../services/dashboard.service';
 import { NgChartsModule } from 'ng2-charts';
 import { Chart, ChartConfiguration, ChartData, registerables } from 'chart.js';
+
 Chart.register(...registerables);
 
 interface LocalDashboardStats {
@@ -24,6 +25,7 @@ interface LocalDashboardStats {
 })
 export class DashboardComponent implements OnInit {
 
+  // --- Données de Statistiques ---
   stats: LocalDashboardStats = {
     totalInfractions: 0,
     totalEtudiants: 0,
@@ -36,6 +38,7 @@ export class DashboardComponent implements OnInit {
   loading: boolean = false;
   error: string = '';
 
+  // --- Configuration du Bar Chart (Hebdomadaire) ---
   public barChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     maintainAspectRatio: false,
@@ -55,25 +58,38 @@ export class DashboardComponent implements OnInit {
     }]
   };
 
+  // --- Configuration du Pie Chart (Punitions) ---
   public pieChartOptions: ChartConfiguration['options'] = {
     responsive: true,
     maintainAspectRatio: false,
-    plugins: { legend: { position: 'bottom' } }
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { boxWidth: 12, padding: 20 }
+      }
+    }
   };
 
   public pieChartData: ChartData<'pie'> = {
+    labels: ['Sursis', 'Avertissement', 'Exclusion'],
     datasets: [{
       data: [200, 50, 100],
       backgroundColor: ['#3b82f6', '#f59e0b', '#ef4444']
     }]
   };
 
-  constructor(private dashboardService: DashboardService) {}
+  constructor(
+    private dashboardService: DashboardService,
+    private router: Router // Injection pour la redirection
+  ) {}
 
   ngOnInit(): void {
     this.loadStats();
   }
 
+  /**
+   * Charge les statistiques depuis le service
+   */
   loadStats(): void {
     this.loading = true;
     this.error = '';
@@ -101,5 +117,24 @@ export class DashboardComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  /**
+   * Gère la déconnexion de l'utilisateur
+   */
+  onLogout(): void {
+    // 1. Demander confirmation (Optionnel mais recommandé)
+    if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+
+      // 2. Nettoyer les données de session
+      localStorage.removeItem('token');
+      localStorage.removeItem('user'); // Si vous stockez les infos utilisateur
+      sessionStorage.clear();
+
+      // 3. Rediriger vers la page de login
+      this.router.navigate(['/login']);
+
+      console.log('Session terminée avec succès.');
+    }
   }
 }

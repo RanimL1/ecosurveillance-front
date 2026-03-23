@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router'; // 1. Ajout de Router ici
 import { UserService } from '../../../services/user.service';
 
 @Component({
@@ -15,10 +15,26 @@ export class UsersComponent implements OnInit {
   users: any[] = [];
   selectedUser: any = null;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
+  }
+
+  /**
+   * Logique de déconnexion
+   */
+  onLogout(): void {
+    // Nettoyage des données de session
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+
+    // Redirection vers la page de connexion
+    this.router.navigate(['/login']);
   }
 
   loadUsers() {
@@ -29,16 +45,20 @@ export class UsersComponent implements OnInit {
 
   addUser() {
     this.selectedUser = null;
+    // Logique pour ouvrir un formulaire d'ajout ici
   }
 
   editUser(user: any) {
     this.selectedUser = { ...user };
+    // Logique pour ouvrir un formulaire d'édition ici
   }
 
   deleteUser(userId: number) {
-    this.userService.deleteUser(userId).subscribe(() => {
-      this.users = this.users.filter(u => u.id !== userId);
-    });
+    if (confirm('Voulez-vous vraiment supprimer cet utilisateur ?')) {
+      this.userService.deleteUser(userId).subscribe(() => {
+        this.users = this.users.filter(u => u.id !== userId);
+      });
+    }
   }
 
   onFormSaved() {

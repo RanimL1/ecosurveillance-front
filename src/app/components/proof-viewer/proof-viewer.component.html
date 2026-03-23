@@ -1,20 +1,37 @@
-<div class="modal-backdrop">
-  <div class="modal" *ngIf="infractionId !== null">
-    <h3>Preuves de l'infraction #{{ infractionId }}</h3>
-    <div class="proof-list">
-      <div *ngFor="let proof of proofs">
-        <button (click)="openPreview(proof)">
-          Voir {{ proof.type }}
-        </button>
+<div class="modal-backdrop" (click)="closePreview()">
+
+  <div class="modal-content" (click)="$event.stopPropagation()" *ngIf="infractionId">
+    <div class="modal-header">
+      <h3>Preuves de l'infraction #{{ infractionId }}</h3>
+      <span class="close-modal" (click)="closePreview()">✖</span>
+    </div>
+
+    <div class="proof-grid">
+      <div *ngFor="let proof of proofs" class="proof-card" (click)="openPreview(proof)">
+        <div class="icon-wrapper">
+          <i [class]="proof.type === 'image' ? 'fas fa-image' : 'fas fa-video'"></i>
+        </div>
+        <div class="proof-info">
+          <span>Voir {{ proof.type === 'image' ? 'l\'image' : 'la vidéo' }}</span>
+        </div>
       </div>
+    </div>
+
+    <div *ngIf="proofs.length === 0" class="no-proofs">
+      <p>Aucune preuve disponible pour cette infraction.</p>
     </div>
   </div>
 </div>
 
-<div class="lightbox" *ngIf="selectedProof" (click)="closePreview()">
-  <img *ngIf="selectedProof.type === 'image'" [src]="selectedProof.url" />
-  <video *ngIf="selectedProof.type === 'video'" controls autoplay>
-    <source [src]="selectedProof.url" type="video/mp4" />
-  </video>
-  <span class="close-btn" (click)="closePreview()">✖</span>
+<div class="lightbox" *ngIf="selectedProof" (click)="selectedProof = null">
+  <div class="lightbox-content" (click)="$event.stopPropagation()">
+    <button class="close-lightbox" (click)="selectedProof = null">✖</button>
+
+    <img *ngIf="selectedProof.type === 'image'" [src]="selectedProof.url" class="media-full" />
+
+    <video *ngIf="selectedProof.type === 'video'" controls autoplay class="media-full">
+      <source [src]="selectedProof.url" type="video/mp4" />
+      Votre navigateur ne supporte pas la lecture de vidéos.
+    </video>
+  </div>
 </div>

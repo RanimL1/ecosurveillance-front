@@ -5,7 +5,7 @@ import { Infraction } from '../models/infraction.model';
 
 @Injectable({ providedIn: 'root' })
 export class InfractionService {
-  private apiUrl = 'http://localhost:8081/api/infractions';
+  private apiUrl = 'http://localhost:8082/api/infractions';
 
   constructor(private http: HttpClient) {}
 

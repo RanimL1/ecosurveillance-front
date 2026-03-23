@@ -1,10 +1,11 @@
 /* --- Variables de Thème --- */
 :host {
-  --primary-blue: #1c3878;    /* Bleu Sidebar et Header */
-  --active-blue: #60a5fa;     /* Bleu de l'élément sélectionné */
-  --bg-light: #f4f7fe;        /* Fond gris clair de la page */
-  --danger: #ef4444;          /* Rouge pour les alertes */
-  --success: #22c55e;         /* Vert pour le succès */
+  --primary-blue: #1c3878;
+  --active-blue: #60a5fa;
+  --bg-light: #f4f7fe;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warning: #fca311;
   --text-main: #1e293b;
   display: block;
 }
@@ -23,7 +24,7 @@
   color: white;
   display: flex;
   flex-direction: column;
-  position: fixed; /* Reste fixe à gauche */
+  position: fixed;
   height: 100vh;
   z-index: 100;
 }
@@ -53,30 +54,85 @@
 }
 
 .menu-item i { width: 20px; font-size: 18px; }
+.menu-item:hover { background-color: rgba(255, 255, 255, 0.1); }
+.menu-item.active { background-color: var(--active-blue); }
 
-.menu-item.active {
-  background-color: var(--active-blue); /* Style surbrillance bleu clair */
-}
-
+/* --- SIDEBAR FOOTER & PROFIL UTILISATEUR --- */
 .sidebar-footer {
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.user-profile { display: flex; align-items: center; gap: 12px; }
+.user-profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Alignement horizontal de l'avatar et du texte */
+.user-profile {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.user-role {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
 .avatar-img {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(255,255,255,0.2);
-}
-.main-content {
-  flex: 1;
-  margin-left: 260px; /* Compense la largeur de la sidebar */
+  flex-shrink: 0;
 }
 
-/* Barre de titre bleue en haut */
+/* --- BOUTON DÉCONNEXION --- */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.logout-btn:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+}
+
+/* --- CONTENU PRINCIPAL & TOP BAR --- */
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+}
+
 .top-bar {
   background-color: var(--primary-blue);
   color: white;
@@ -86,14 +142,13 @@
   align-items: center;
 }
 
-.top-bar h2 { margin: 0; font-size: 26px; font-weight: 500; }
-.user-info-top { display: flex; align-items: center; gap: 12px; }
-/* Table Design */
+.content-area { padding: 30px 40px; }
+
+/* --- TABLEAU DESIGN --- */
 .table-card {
   background: white;
-  width: 95%;
-  padding: 30px;
-  border-radius: 4px;
+  padding: 20px;
+  border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.05);
 }
 
@@ -108,54 +163,75 @@
   border: 1px solid #93c5fd;
   background-color: #f0f7ff;
   color: #1e3a8a;
+  font-weight: 700;
 }
 
 .infractions-table td {
   padding: 15px;
   border: 1px solid #93c5fd;
   color: #333;
-  font-weight: 500;
 }
 
-/* Boutons et Badges */
-.btn-preuve {
-  background-color: #e2e8f0;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
+/* --- BOUTONS DANS LE TABLEAU --- */
+.btn-view {
+  background-color: #eff6ff;
+  color: #1c3878;
+  border: 1px solid #bfdbfe;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 600;
   font-size: 12px;
-}
-
-/* Style pour la cellule ou le bouton d'action */
-.btn-action {
-  background: transparent; /* Pas de fond sur le bouton lui-même */
-  border: none;
-  color: #000000;          /* Texte noir */
-  font-weight: 800;        /* Très gras */
-  font-size: 0.85rem;
-  text-align: center;
   cursor: pointer;
-  line-height: 1.4;        /* Espacement entre "Valider" et "Constament" */
-  display: inline-block;
-  text-transform: none;
-  white-space: normal;     /* Permet le retour à la ligne */
-  width: 100px;            /* Force le retour à la ligne si besoin */
+  transition: all 0.2s ease;
 }
 
-/* Style de la cellule parent pour le fond bleu clair */
-.infractions-table td:last-child {
-  background-color: #ebf5ff; /* Bleu très pâle comme sur l'image */
-  padding: 10px;
+.btn-view:hover {
+  background-color: var(--primary-blue);
+  color: white;
+  border-color: var(--primary-blue);
 }
 
+.btn-action {
+  background: transparent;
+  border: none;
+  color: #000000;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.disabled-btn {
+  text-decoration: line-through !important;
+  color: #a0aec0 !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+}
+
+/* --- BADGES DE STATUT --- */
 .status-badge {
   padding: 6px 15px;
-  border-radius: 10px;
+  border-radius: 20px;
   font-size: 12px;
-  color: white;
   font-weight: bold;
+  display: inline-block;
+  min-width: 90px;
 }
 
-.status-badge.waiting { background-color: #ff7675; } /* Rouge/Rose */
-.status-badge.completed { background-color: #55efc4; color: #2d3436; } /* Vert */
+.status-badge.waiting { background-color: #ff7675; color: white; }
+.status-badge.processing { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+.status-badge.completed { background-color: #55efc4; color: #155724; }
+
+.infractions-table td:last-child {
+  background-color: #ebf5ff;
+}
+
+/* --- MODALE (PROOF VIEWER) --- */
+app-proof-viewer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+}

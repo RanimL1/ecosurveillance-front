@@ -1,10 +1,11 @@
 /* --- Variables de Thème --- */
 :host {
-  --primary-blue: #1c3878;    /* Bleu Sidebar et Header */
-  --active-blue: #60a5fa;     /* Bleu de l'élément sélectionné */
-  --bg-light: #f4f7fe;        /* Fond gris clair de la page */
-  --danger: #ef4444;          /* Rouge pour les alertes */
-  --success: #22c55e;         /* Vert pour le succès */
+  --primary-blue: #1c3878;
+  --active-blue: #60a5fa;
+  --bg-light: #f4f7fe;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warning: #fca311;
   --text-main: #1e293b;
   display: block;
 }
@@ -16,14 +17,14 @@
   background-color: var(--bg-light);
 }
 
-/* --- SIDEBAR (Barre Latérale) --- */
+/* --- SIDEBAR --- */
 .sidebar {
   width: 260px;
   background-color: var(--primary-blue);
   color: white;
   display: flex;
   flex-direction: column;
-  position: fixed; /* Reste fixe à gauche */
+  position: fixed;
   height: 100vh;
   z-index: 100;
 }
@@ -53,32 +54,86 @@
 }
 
 .menu-item i { width: 20px; font-size: 18px; }
+.menu-item:hover { background-color: rgba(255, 255, 255, 0.1); }
+.menu-item.active { background-color: var(--active-blue); }
 
-.menu-item.active {
-  background-color: var(--active-blue); /* Style surbrillance bleu clair */
-}
-
+/* --- SIDEBAR FOOTER & USER PROFILE (CORRECTION ICI) --- */
 .sidebar-footer {
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-.user-profile { display: flex; align-items: center; gap: 12px; }
+.user-profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Correction pour l'alignement horizontal */
+.user-profile {
+  display: flex !important;
+  flex-direction: row !important; /* Force l'avatar à côté du texte */
+  align-items: center;
+  gap: 12px;
+}
+
+/* Garde le nom au dessus du rôle */
+.user-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.user-name {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap; /* Empêche le nom de passer à la ligne */
+}
+
+.user-role {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
 .avatar-img {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(255,255,255,0.2);
+  flex-shrink: 0; /* Empêche l'image de s'écraser */
 }
 
-/* --- CONTENU PRINCIPAL --- */
+/* --- BOUTON DÉCONNEXION --- */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.logout-btn:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+}
+
+/* --- CONTENU PRINCIPAL & TABLEAU --- */
 .main-content {
   flex: 1;
-  margin-left: 260px; /* Compense la largeur de la sidebar */
+  margin-left: 260px;
 }
 
-/* Barre de titre bleue en haut */
 .top-bar {
   background-color: var(--primary-blue);
   color: white;
@@ -88,8 +143,6 @@
   align-items: center;
 }
 
-.top-bar h2 { margin: 0; font-size: 26px; font-weight: 500; }
-.user-info-top { display: flex; align-items: center; gap: 12px; }
 /* Main Content Area */
 .main-content {
   flex: 1;

@@ -13,7 +13,7 @@ export interface Preuve {
 })
 export class PreuveService {
 
-  private apiUrl = 'http://localhost:8081/api/preuves';
+  private apiUrl = 'http://localhost:8082/api/preuves';
 
   constructor(private http: HttpClient) {}
 

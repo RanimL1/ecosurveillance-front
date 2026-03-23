@@ -5,7 +5,7 @@ import { Punition } from '../models/punition.model';
 
 @Injectable({ providedIn: 'root' })
 export class PunitionService {
-  private apiUrl = 'http://localhost:8081/api/punitions';
+  private apiUrl = 'http://localhost:8082/api/punitions';
 
   constructor(private http: HttpClient) {}
 

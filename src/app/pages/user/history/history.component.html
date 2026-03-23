@@ -18,12 +18,18 @@
     </nav>
 
     <div class="sidebar-footer">
-      <div class="user-profile">
-        <img src="assets/user.png" alt="User" class="avatar-img">
-        <div class="user-text">
-          <p class="user-name">Foulen Ben Foulen</p>
-          <p class="user-role">Etudiant</p>
+      <div class="user-profile-container">
+        <div class="user-profile">
+          <img src="assets/user.png" alt="User" class="avatar-img">
+          <div class="user-text">
+            <p class="user-name">Foulen Ben Foulen</p>
+            <p class="user-role">Etudiant</p>
+          </div>
         </div>
+        <button class="logout-btn" (click)="onLogout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Déconnexion</span>
+        </button>
       </div>
     </div>
   </aside>
@@ -41,6 +47,40 @@
     </header>
 
     <section class="content-area">
+      <div class="stats-container">
+        <div class="stat-card">
+          <p class="stat-label">Total infractions</p>
+          <div class="stat-value-row">
+            <span class="stat-number">3</span>
+            <i class="fas fa-file-alt icon-blue"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Infractions terminées</p>
+          <div class="stat-value-row">
+            <span class="stat-number">2</span>
+            <i class="fas fa-check-circle icon-green"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Infractions en attente</p>
+          <div class="stat-value-row">
+            <span class="stat-number">1</span>
+            <i class="fas fa-times-circle icon-red"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <p class="stat-label">Date de la punition la plus proche</p>
+          <div class="stat-value-row">
+            <span class="stat-date">05/05/2026</span>
+            <i class="fas fa-calendar-alt icon-black"></i>
+          </div>
+        </div>
+      </div>
+
       <div class="table-card">
         <table class="history-table">
           <thead>
@@ -62,7 +102,11 @@
             </td>
             <td>{{ infraction.date | date:'dd/MM/yy' }}</td>
             <td>{{ infraction.punition || '-' }}</td>
-            <td><span class="status-badge completed">Terminé</span></td>
+            <td>
+                <span class="status-badge" [ngClass]="infraction.status === 'Terminé' ? 'completed' : 'waiting'">
+                  {{ infraction.status || 'Terminé' }}
+                </span>
+            </td>
           </tr>
           </tbody>
         </table>

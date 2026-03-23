@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router'; // Ajout de Router ici
 import { InfractionService } from '../../../services/infraction.service';
 import { InfractionTableComponent } from '../../../components/infraction-table/infraction-table.component';
 
@@ -16,16 +16,23 @@ export class InfractionsComponent implements OnInit {
   loading = true;
   error: string | null = null;
 
-  constructor(private infractionService: InfractionService) {}
+  // Correction de la syntaxe du constructeur
+  constructor(
+    private infractionService: InfractionService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // On simule une réponse immédiate avec les données de l'image 3
+    // Simulation de données
     this.infractions = [
-      { etudiantNom: 'Foulen ben Foulen', date: '2025-05-01', status: 'TERMINE', punitionDescription: '-' },
-      { etudiantNom: 'Foulen ben Foulen', date: '2025-08-02', status: 'EN_ATTENTE', punitionDescription: '-' }
+      { id: 1, etudiantNom: 'Foulen ben Foulen', date: '2025-05-01', status: 'TERMINE', punitionDescription: '-' },
+      { id: 2, etudiantNom: 'Foulen ben Foulen', date: '2025-08-02', status: 'EN_ATTENTE', punitionDescription: '-' }
     ];
     this.loading = false;
     this.error = null;
+
+    // Si vous voulez charger les vraies données au démarrage, décommentez la ligne suivante :
+    // this.loadInfractions();
   }
 
   loadInfractions() {
@@ -37,6 +44,7 @@ export class InfractionsComponent implements OnInit {
         this.loading = false;
       },
       error: (err) => {
+        console.error(err);
         this.error = 'Impossible de charger les infractions';
         this.loading = false;
       }
@@ -45,12 +53,26 @@ export class InfractionsComponent implements OnInit {
 
   editInfraction(infraction: any) {
     console.log('Edit', infraction);
-    // tu peux ouvrir un modal ou une page d'édition ici
   }
 
   deleteInfraction(id: number) {
-    this.infractionService.deleteInfraction(id).subscribe(() => {
-      this.infractions = this.infractions.filter(i => i.id !== id);
-    });
+    if (confirm('Supprimer cette infraction ?')) {
+      this.infractionService.deleteInfraction(id).subscribe(() => {
+        this.infractions = this.infractions.filter(i => i.id !== id);
+      });
+    }
+  }
+
+  /**
+   * Logique de déconnexion
+   */
+  onLogout(): void {
+    // Nettoyage du stockage local
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    sessionStorage.clear();
+
+    // Redirection vers le login
+    this.router.navigate(['/login']);
   }
 }

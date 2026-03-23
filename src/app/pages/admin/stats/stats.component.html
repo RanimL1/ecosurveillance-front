@@ -24,12 +24,19 @@
     </nav>
 
     <div class="sidebar-footer">
-      <div class="user-profile">
-        <img src="assets/admin.jpg" alt="Admin" class="avatar-img">
-        <div class="user-text">
-          <p class="user-name">Foulen Ben Foulen</p>
-          <p class="user-role">Admin</p>
+      <div class="user-profile-container">
+        <div class="user-profile">
+          <img src="assets/admin.jpg" alt="Admin" class="avatar-img">
+          <div class="user-text">
+            <p class="user-name">Foulen Ben Foulen</p>
+            <p class="user-role">Admin</p>
+          </div>
         </div>
+
+        <button class="logout-btn" (click)="onLogout()">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Déconnexion</span>
+        </button>
       </div>
     </div>
   </aside>
@@ -50,7 +57,7 @@
       <div class="stats-container">
 
         <div class="chart-section">
-          <h3 class="chart-title">Infractions par Type</h3>
+          <h3 class="chart-title">Infractions par status</h3>
           <div class="canvas-container">
             <canvas id="barChart"></canvas>
           </div>
