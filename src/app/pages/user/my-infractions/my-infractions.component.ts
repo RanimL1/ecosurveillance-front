@@ -13,9 +13,9 @@ import { RouterModule } from '@angular/router';
 export class MyInfractionsComponent {
 
   infractions = [
-    { id: 1, description: 'Jet de déchets', date: new Date('2026-01-02'), punition: '-', status: 'En attente' },
-    { id: 2, description: 'Dégradation mur', date: new Date('2026-01-06'), punition: '-', status: 'Terminé' },
-    { id: 3, description: 'Graffiti interdit', date: new Date('2026-01-06'), punition: '-', status: 'Terminé' }
+    { id: 1, description: '-', date: new Date('2026-01-02'), punition: '-', status: 'En attente' },
+    { id: 2, description: '-', date: new Date('2026-01-06'), punition: '-', status: 'Terminé' },
+    { id: 3, description: '-', date: new Date('2026-01-06'), punition: '-', status: 'Terminé' }
   ];
 
   selectedInfractionId: number | null = null;
